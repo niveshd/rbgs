@@ -1,8 +1,9 @@
 #include <vector>
 #include <iostream>
-#define pi 3.1415926535897932
 #include "Timer.h"
 #include <sstream>
+
+#define pi 3.1415926535897932
 
 int main(int argc, char *argv[]){
   
@@ -15,19 +16,24 @@ int main(int argc, char *argv[]){
   std::cout << "No of Arguments " << argc << std::endl;
   std::cout << "n_x = " << n_x << ", n_y = " << n_y << ", iterations = " << c << std::endl;
   
+  
+  
 //grid object
   //vector of all node values
+
+  //operator(i,j) to access values. write a get function as well. eg. A.get(i,j) returning data vector
+    //A.get(i,j) = data(j*n_x + i)
+  //data members: n_x, n_y
+  //data members: h_x = 2/n_x, h_y = 1/n_y;
+    //n_x and n_y and no. of intervals. no. of grid points then is n_x+1 and n_y+1
+  
   //constructor (size_x, size y)
-    //vector (size_x*size_y)
-  //operator(i,j) to access values
-  //data members: size_x, size_y -> h_x = 2/(size_x-1), h_y = 1/(size_y-1);
-  //
+    //data vector (n_x+1)*(n_y+1)
   
-//define pi
-//define f = 4*pi*pi*sin(2*pi*h_x*i
-//)*sinh(2*pi*j*h_y)
+  //need get_f function which evaluates right handside
+    //A.get_f(i,j) = 4*pi*pi*sin(2*pi*h_x*i)*sinh(2*pi*j*h_y)
+
   
-//
   
 //setboundaryconditions function
    //set non zero dirichlet
