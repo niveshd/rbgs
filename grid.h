@@ -11,15 +11,13 @@ double n_x,n_y,h_x,h_y;
 
 public:
 
-///@brief Constructor Declarations
+///Constructor Declarations
 Grid(int size_x,int size_y);
 
+///u approximation vector
 std::vector<double> u_app;
 
 double get(int i,int j);
-
-/// To access private data menbers ///
-
 
 };
 
