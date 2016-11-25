@@ -8,18 +8,20 @@ class Grid
 // n_x, n_y = total number of intervals
 // h_x, h_y = node spacing in x and y
     
-double n_x,n_y,h_x,h_y;
-std::vector<double> u_app; 
+
 
 public:
+
+double n_x,n_y,h_x,h_y;
+
+///u approximation vector
+std::vector<double> vec; 
 
 ///Constructor Declarations
 Grid(int size_x,int size_y);
 
-///u approximation vector
+double& operator ()(int x, int y);
 
-
-double get(int i,int j);
 
 };
 
