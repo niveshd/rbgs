@@ -4,11 +4,11 @@
 #include <sstream>
 #include "grid.h"
 #include <math.h>
+#include "misc.h"
 
 #define pi 3.1415926535897932
 
-double (*g)(double x, double y){return 4*pi*pi*sin(2*pi*x)*sinh(2*pi*y);}
-
+void Solver(Grid &, Grid &, int);
 
 int main(int argc, char *argv[]){
   
@@ -42,26 +42,13 @@ int main(int argc, char *argv[]){
   
   
 //setboundaryconditions function
-  set_boundary(u,g); 
-  
-  //set non zero dirichlet
-   //loop over y=1 boundary
-      //set to sin(2*pi*h_x*i)*sinh(2*pi*j*h_y)
+  set_boundary(u); 
   
 //RBGS
-  solver(u,f);
+  //set timer
   
-  //loop over red
-    //calculate u based on neighbours
-    //need stencil values
-  
-  //loop over black
-    
-  
-  //calculate error norm
-  
-  
-  //loop over inner points
+  //Solver(u,f,c);
+
   
 //write grid
   write(u, "solution.txt");
