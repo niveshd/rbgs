@@ -3,8 +3,12 @@
 #include "Timer.h"
 #include <sstream>
 #include "grid.h"
+#include <math.h>
 
 #define pi 3.1415926535897932
+
+double (*g)(double x, double y){return 4*pi*pi*sin(2*pi*x)*sinh(2*pi*y);}
+
 
 int main(int argc, char *argv[]){
   
@@ -17,9 +21,7 @@ int main(int argc, char *argv[]){
   std::cout << "No of Arguments " << argc << std::endl;
   std::cout << "n_x = " << n_x << ", n_y = " << n_y << ", iterations = " << c << std::endl;
   
-  Grid A(n_x,n_y);
-  
-
+  Grid u(n_x,n_y);
   
   
 //grid object
@@ -40,11 +42,15 @@ int main(int argc, char *argv[]){
   
   
 //setboundaryconditions function
-   //set non zero dirichlet
+  set_boundary(u,g); 
+  
+  //set non zero dirichlet
    //loop over y=1 boundary
       //set to sin(2*pi*h_x*i)*sinh(2*pi*j*h_y)
   
 //RBGS
+  solver(u,f);
+  
   //loop over red
     //calculate u based on neighbours
     //need stencil values
@@ -52,7 +58,13 @@ int main(int argc, char *argv[]){
   //loop over black
     
   
-//calculate error norm
+  //calculate error norm
+  
+  
   //loop over inner points
+  
+//write grid
+  write(u, "solution.txt");
 
 }
+
