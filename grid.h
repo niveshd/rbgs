@@ -1,5 +1,7 @@
-#ifndefine GRID_H
+#ifndef GRID_H
 #define GRID_H
+#include<vector>
+
 class Grid
 {
 
@@ -7,7 +9,7 @@ class Grid
 // h_x, h_y = node spacing in x and y
     
 double n_x,n_y,h_x,h_y;
-  
+std::vector<double> u_app; 
 
 public:
 
@@ -15,12 +17,10 @@ public:
 Grid(int size_x,int size_y);
 
 ///u approximation vector
-std::vector<double> u_app;
+
 
 double get(int i,int j);
 
 };
-
-
 
 #endif

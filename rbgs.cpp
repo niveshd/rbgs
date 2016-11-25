@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Timer.h"
 #include <sstream>
+#include "grid.h"
 
 #define pi 3.1415926535897932
 
@@ -16,6 +17,9 @@ int main(int argc, char *argv[]){
   std::cout << "No of Arguments " << argc << std::endl;
   std::cout << "n_x = " << n_x << ", n_y = " << n_y << ", iterations = " << c << std::endl;
   
+  Grid A(n_x,n_y);
+  
+
   
   
 //grid object
