@@ -22,6 +22,8 @@ int main(int argc, char *argv[]){
   std::cout << "n_x = " << n_x << ", n_y = " << n_y << ", iterations = " << c << std::endl;
   
   Grid u(n_x,n_y);
+  Grid f(n_x,n_y);
+  
   
   
 //grid object
@@ -43,12 +45,12 @@ int main(int argc, char *argv[]){
   
 //setboundaryconditions function
   set_boundary(u); 
+  set_rhs(f);
   
 //RBGS
   //set timer
   
-  //Solver(u,f,c);
-
+  //Solver(u,f,res,c);
   
 //write grid
   write(u, "solution.txt");
