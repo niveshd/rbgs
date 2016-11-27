@@ -8,7 +8,7 @@
 
 #define pi 3.1415926535897932
 
-void Solver(Grid &, Grid &, int);
+void solver(Grid &, Grid &, int);
 
 int main(int argc, char *argv[]){
   
@@ -50,7 +50,7 @@ int main(int argc, char *argv[]){
 //RBGS
   //set timer
   
-  //Solver(u,f,res,c);
+  solver(u,f,c);
   
 //write grid
   write(u, "solution.txt");

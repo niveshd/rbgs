@@ -42,15 +42,15 @@ void set_boundary(Grid &u){
 }
 
 void set_rhs(Grid &f){
- int i=0,j=0;
+ int i=f.n_x,j=0;
   //loop over i ... n_x
- for (i=0; i != f.n_x+1; ++i){
+ //for (i=0; i != f.n_x+1; ++i){
  //loop over j ... n_y
-   for (j=0; i != f.n_y+1; ++j){    
+   for (j=0; i != f.n_y; ++j){    
     f(i,j)=4*pi*pi*sin(2*pi*i*f.n_x)*sinh(2*pi*j*f.n_y);
      
    }   
- }   
+ //}   
 }
 
 void write(Grid &u, std::string output_file){

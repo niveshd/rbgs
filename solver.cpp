@@ -15,33 +15,33 @@ void solver(Grid &u,Grid &f,int c){
   int ngp_x = n_x+1;
   int ngp_y = n_y+1;
   int p=0; int q=0; 
-  Grid res(n_x,n_y);
+  //Grid res(n_x,n_y);
   double numer = ((n_x*n_x)*0.5 + (n_y*n_y)*2 + (4*pi*pi));  
   double denom = 1/numer;           // 1/(2/h_x*h_x  + 2/h_y*h_y + k*k)
   
   for(int i=0; i<c; ++i){
-    //Red update
+    //Black update
     for(int y=1; y < ngp_x-2 ; ++y){
-        if (y%2==0){
-        p = 2;
-        q = ngp_x-1;
-                    }
+        if (y&1){
+            p=1;
+            q= ngp_x-3;
+                }
         else{
-          p=1;
-          q= ngp_x-3;
+            p = 2;
+            q = ngp_x-1;
             } 
         for(int x=p; x< q; x=x+2)
             u(x,y) = denom*(f(x,y)+ ((n_x*n_x) * (u(x-1,y)+u(x+1,y))) +  ((n_y*n_y) * (u(x,y-1)+u(x,y+1))));
       }
-  //Black Update
+  //Red Update
     for(int y=1; y < ngp_x-2 ; ++y){
-        if (y%2!=0){
-        p = 2;
-        q = ngp_x-1;
+        if (y&1){
+            p = 2;
+            q = ngp_x-1;
                     }
         else{
-          p=1;
-          q= ngp_x-3;
+            p=1;
+            q= ngp_x-3;
             } 
         for(int x=p; x< q; x=x+2)
             u(x,y) = denom*(f(x,y)+ ((n_x*n_x) * (u(x-1,y)+u(x+1,y))) +  ((n_y*n_y) * (u(x,y-1)+u(x,y+1))));
