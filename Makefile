@@ -25,7 +25,7 @@ solve: $(HEAD1).h $(HEAD2).cpp
 	$(CXX) -c $(CXXFLAGS) $(INCLUDES) $(HEAD2).cpp -o $(HEAD2)
 	
 test:
-	./rbgs 2 2 10
+	./rbgs 12 12 10
 
 clean:
 	@$(RM) -rf *.o $(TARGET)

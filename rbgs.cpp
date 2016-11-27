@@ -19,7 +19,7 @@ int main(int argc, char *argv[]){
   
   str >> n_x >> n_y >> c;  
   std::cout << "No of Arguments " << argc << std::endl;
-  std::cout << "n_x = " << n_x << ", n_y = " << n_y << ", iterations = " << c << std::endl;
+  //std::cout << "n_x = " << n_x << ", n_y = " << n_y << ", iterations = " << c << std::endl;
   
   Grid u(n_x,n_y);
   Grid f(n_x,n_y);

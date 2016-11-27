@@ -31,7 +31,7 @@ void solver(Grid &u,Grid &f,int c){
             q = ngp_x-1;
             } 
         for(int x=p; x< q; x=x+2)
-            u(x,y) = denom*(f(x,y)+ ((n_x*n_x) * (u(x-1,y)+u(x+1,y))) +  ((n_y*n_y) * (u(x,y-1)+u(x,y+1))));
+            u(x,y) = denom*(f(x,y)+ ((n_x*n_x*0.25) * (u(x-1,y)+u(x+1,y))) +  ((n_y*n_y) * (u(x,y-1)+u(x,y+1))));
       }
   //Red Update
     for(int y=1; y < ngp_x-2 ; ++y){
@@ -44,7 +44,7 @@ void solver(Grid &u,Grid &f,int c){
             q= ngp_x-3;
             } 
         for(int x=p; x< q; x=x+2)
-            u(x,y) = denom*(f(x,y)+ ((n_x*n_x) * (u(x-1,y)+u(x+1,y))) +  ((n_y*n_y) * (u(x,y-1)+u(x,y+1))));
+            u(x,y) = denom*(f(x,y)+ ((n_x*n_x*0.25) * (u(x-1,y)+u(x+1,y))) +  ((n_y*n_y) * (u(x,y-1)+u(x,y+1))));
         }
   }
   
@@ -54,7 +54,7 @@ void solver(Grid &u,Grid &f,int c){
     double norm =0;
     for(int y=1; y < ngp_x-2 ; ++y){
         for(int x=1; x < ngp_x-2 ; ++x){
-            res_i_j = (f(x,y)+ ((n_x*n_x) * (u(x-1,y)+u(x+1,y))) +  ((n_y*n_y) * (u(x,y-1)+u(x,y+1)) - (numer*u(x,y))));
+            res_i_j = (f(x,y)+ ((n_x*n_x*0.25) * (u(x-1,y)+u(x+1,y))) +  ((n_y*n_y) * (u(x,y-1)+u(x,y+1)) - (numer*u(x,y))));
             sum+= res_i_j*res_i_j;
         }
     }
