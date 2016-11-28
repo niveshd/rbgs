@@ -53,7 +53,7 @@ int main(int argc, char *argv[]){
   solver(u,f,c);
   
 //write grid
-  write(u, "solution.txt");
+  write(u, "solution1.txt");
 
 }
 

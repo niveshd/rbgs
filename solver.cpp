@@ -18,10 +18,14 @@ void solver(Grid &u,Grid &f,int c){
   //Grid res(n_x,n_y);
   double numer = ((n_x*n_x)*0.5 + (n_y*n_y)*2 + (4*pi*pi));  
   double denom = 1/numer;           // 1/(2/h_x*h_x  + 2/h_y*h_y + k*k)
-  
+  siwir::Timer timer;
+  double time1 = 100.0;
+  double time2 = 100.0;
+
+  timer.reset();
   for(int i=0; i<c; ++i){
     //Black update
-    for(int y=1; y < ngp_x-2 ; ++y){
+    for(int y=1; y < ngp_y-2 ; ++y){
         if (y&1){
             p=1;
             q= ngp_x-3;
@@ -34,7 +38,7 @@ void solver(Grid &u,Grid &f,int c){
             u(x,y) = denom*(f(x,y)+ ((n_x*n_x*0.25) * (u(x-1,y)+u(x+1,y))) +  ((n_y*n_y) * (u(x,y-1)+u(x,y+1))));
       }
   //Red Update
-    for(int y=1; y < ngp_x-2 ; ++y){
+    for(int y=1; y < ngp_y-2 ; ++y){
         if (y&1){
             p = 2;
             q = ngp_x-1;
@@ -47,19 +51,27 @@ void solver(Grid &u,Grid &f,int c){
             u(x,y) = denom*(f(x,y)+ ((n_x*n_x*0.25) * (u(x-1,y)+u(x+1,y))) +  ((n_y*n_y) * (u(x,y-1)+u(x,y+1))));
         }
   }
-  
+  time1 = std::min(time1, timer.elapsed());
+
+  timer.reset();
   //Residual
     double sum =0;
     double res_i_j =0;
     double norm =0;
-    for(int y=1; y < ngp_x-2 ; ++y){
+    //loop over all interior points ngp_x-2 * ngp_y-2
+    #pragma omp parallel for reduction(+:sum)
+    for(int y=1; y < ngp_y-2 ; ++y){
         for(int x=1; x < ngp_x-2 ; ++x){
             res_i_j = (f(x,y)+ ((n_x*n_x*0.25) * (u(x-1,y)+u(x+1,y))) +  ((n_y*n_y) * (u(x,y-1)+u(x,y+1)) - (numer*u(x,y))));
-            sum+= res_i_j*res_i_j;
+            sum+= (res_i_j*res_i_j);
         }
     }
-    norm = sqrt(sum/((ngp_x-2) * (ngp_y-2)));
+    sum = sum / ((ngp_x-2)*(ngp_y-2));
+    norm = sqrt(sum);
+    time2 = std::min(time2, timer.elapsed());
     
-    std::cout << "Norm is " << norm << std::endl;  
+    std::cout << "Norm is " << norm << std::endl;
+    std::cout << "Time for rbgs " << time1 << " sec" << std::endl;
+    std::cout << "Time for residual " << time2*1e6 << " milli-sec" << std::endl;
 }
 
