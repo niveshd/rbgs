@@ -54,6 +54,7 @@ int main(int argc, char *argv[]){
   
 //write grid
   write(u, "solution1.txt");
+  //write(f,"force.txt");
 
 }
 

@@ -14,7 +14,7 @@ void solver(Grid &u,Grid &f,int c){
   int n_y = u.n_y;
   int ngp_x = n_x+1;
   int ngp_y = n_y+1;
-  int p=0; int q=0; 
+  
   //Grid res(n_x,n_y);
   double numer = ((n_x*n_x)*0.5 + (n_y*n_y)*2 + (4*pi*pi));  
   double denom = 1/numer;           // 1/(2/h_x*h_x  + 2/h_y*h_y + k*k)
@@ -25,31 +25,23 @@ void solver(Grid &u,Grid &f,int c){
   timer.reset();
   for(int i=0; i<c; ++i){
     //Black update
-    for(int y=1; y < ngp_y-2 ; ++y){
-        if (y&1){
-            p=1;
-            q= ngp_x-3;
-                }
-        else{
-            p = 2;
-            q = ngp_x-1;
-            } 
-        for(int x=p; x< q; x=x+2)
-            u(x,y) = denom*(f(x,y)+ ((n_x*n_x*0.25) * (u(x-1,y)+u(x+1,y))) +  ((n_y*n_y) * (u(x,y-1)+u(x,y+1))));
-      }
+    #pragma omp parallel for
+    for(int y=1; y <= ngp_y-2 ;y=y+2)
+        for(int x=1; x<= ngp_x-2; x=x+2)
+	   u(x,y) = denom*(f(x,y)+ ((n_x*n_x*0.25) * (u(x-1,y)+u(x+1,y))) +  ((n_y*n_y) * (u(x,y-1)+u(x,y+1))));
+    #pragma omp parallel for
+    for(int y=2; y <= ngp_y-2 ;y=y+2)
+        for(int x=2; x<= ngp_x-2; x=x+2)
+	   u(x,y) = denom*(f(x,y)+ ((n_x*n_x*0.25) * (u(x-1,y)+u(x+1,y))) +  ((n_y*n_y) * (u(x,y-1)+u(x,y+1))));
   //Red Update
-    for(int y=1; y < ngp_y-2 ; ++y){
-        if (y&1){
-            p = 2;
-            q = ngp_x-1;
-                    }
-        else{
-            p=1;
-            q= ngp_x-3;
-            } 
-        for(int x=p; x< q; x=x+2)
-            u(x,y) = denom*(f(x,y)+ ((n_x*n_x*0.25) * (u(x-1,y)+u(x+1,y))) +  ((n_y*n_y) * (u(x,y-1)+u(x,y+1))));
-        }
+    #pragma omp parallel for
+    for(int y=1; y <= ngp_y-2 ;y=y+2)
+        for(int x=2; x<= ngp_x-2; x=x+2)
+	   u(x,y) = denom*(f(x,y)+ ((n_x*n_x*0.25) * (u(x-1,y)+u(x+1,y))) +  ((n_y*n_y) * (u(x,y-1)+u(x,y+1))));
+    #pragma omp parallel for
+    for(int y=2; y <= ngp_y-2 ;y=y+2)
+        for(int x=1; x<= ngp_x-2; x=x+2)
+	   u(x,y) = denom*(f(x,y)+ ((n_x*n_x*0.25) * (u(x-1,y)+u(x+1,y))) +  ((n_y*n_y) * (u(x,y-1)+u(x,y+1))));
   }
   time1 = std::min(time1, timer.elapsed());
 
@@ -58,10 +50,11 @@ void solver(Grid &u,Grid &f,int c){
     double sum =0;
     double res_i_j =0;
     double norm =0;
+    int x=1;
     //loop over all interior points ngp_x-2 * ngp_y-2
-    #pragma omp parallel for reduction(+:sum)
-    for(int y=1; y < ngp_y-2 ; ++y){
-        for(int x=1; x < ngp_x-2 ; ++x){
+    #pragma omp parallel for private(res_i_j,x) reduction(+:sum)
+    for(int y=1; y <= ngp_y-2 ; ++y){
+        for(x=1; x <= ngp_x-2 ; ++x){
             res_i_j = (f(x,y)+ ((n_x*n_x*0.25) * (u(x-1,y)+u(x+1,y))) +  ((n_y*n_y) * (u(x,y-1)+u(x,y+1)) - (numer*u(x,y))));
             sum+= (res_i_j*res_i_j);
         }
