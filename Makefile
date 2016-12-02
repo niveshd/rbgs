@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++0x -fopenmp -Wall -Wextra -Wshadow -O3 -DNDEBUG
+CXXFLAGS = -std=c++0x -fopenmp -Wall -Wextra -Wshadow -Werror -O3 -DNDEBUG
 
 INCLUDES =
 LDFLAGS =
@@ -28,4 +28,4 @@ test:
 	./rbgs 14 14 1000
 
 clean:
-	@$(RM) -rf *.o $(TARGET)
+	@$(RM) -rf *.o *.txt $(TARGET)

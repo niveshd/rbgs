@@ -1,0 +1,15 @@
+#!/bin/bash
+
+echo cpu_number 32 33 1024 1025 2048 2049 > "graph.txt"
+
+for threads in 1 2 4 8 16 32
+do
+	echo -n $threads " " >> "graph.txt"
+	export OMP_NUM_THREADS=$threads
+for i in 32 33 1024 1025 2048 2049
+do
+	./rbgs $i $i 500 1 >> "graph.txt"
+	echo size $i
+done
+echo >> "graph.txt"
+done
