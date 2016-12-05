@@ -23,8 +23,8 @@ void solver(Grid &u,Grid &f,int c){
   siwir::Timer timer;
   double time = 100.0;
   int x=1, y=1;
-  double _nx2 = n_x*n_x*0.25; 
-  double _ny2 = n_y*n_y;
+  double _nx2 = (double)n_x*(double)n_x*0.25; 
+  double _ny2 = (double)n_y*(double)n_y;
   double d_nx2 = denom*n_x*n_x*0.25; 
   double d_ny2 = denom*n_y*n_y;
   
@@ -57,6 +57,7 @@ void solver(Grid &u,Grid &f,int c){
   //end of timing
 
   //Residual
+  
     double sum =0;
     double res_i_j =0;
     double norm =0;
@@ -64,8 +65,9 @@ void solver(Grid &u,Grid &f,int c){
     #pragma omp parallel for private(res_i_j,x) reduction(+:sum)
     for(y=1; y <= ngp_y-2 ; ++y){
         for(x=1; x <= ngp_x-2 ; ++x){
-            res_i_j = (f(x,y)+ (_nx2 * (u(x-1,y)+u(x+1,y))) +  (_ny2 * (u(x,y-1)+u(x,y+1)) - (numer*u(x,y))));
+            res_i_j = (f(x,y)+ ((double)_nx2 * (u(x-1,y)+u(x+1,y))) +  ((double)_ny2 * (u(x,y-1)+u(x,y+1)) - (numer*u(x,y))));
             sum+= (res_i_j*res_i_j);
+	    //std::cout<<sum<<std::endl;
         }
     }
     sum = sum / ((ngp_x-2)*(ngp_y-2));
@@ -79,6 +81,8 @@ void solver(Grid &u,Grid &f,int c){
     }
     else
       std::cout << time << " ";
+    
+    
     
 }
 

@@ -12,10 +12,11 @@ class Grid
 
 public:
 
-double n_x,n_y,h_x,h_y;
+double n_x,n_y;
+double h_x,h_y;
 
 ///u approximation vector
-std::vector<double> vec; 
+double *vec; 
 
 ///Constructor Declarations
 Grid(int size_x,int size_y);
