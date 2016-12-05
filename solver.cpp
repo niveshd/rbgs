@@ -23,6 +23,10 @@ void solver(Grid &u,Grid &f,int c){
   siwir::Timer timer;
   double time = 100.0;
   int x=1, y=1;
+  double _nx2 = n_x*n_x*0.25; 
+  double _ny2 = n_y*n_y;
+  double d_nx2 = denom*n_x*n_x*0.25; 
+  double d_ny2 = denom*n_y*n_y;
   
   //only solver to be timed
   timer.reset();
@@ -30,23 +34,23 @@ void solver(Grid &u,Grid &f,int c){
   //solver part
   for(int i=0; i<c; ++i){
     //Black update
-    #pragma omp parallel for private(x)
+    #pragma omp parallel for private(y,x) schedule(static)
     for(y=1; y <= ngp_y-2 ;y=y+2)
         for(x=1; x<= ngp_x-2; x=x+2)
-	   u(x,y) = denom*(f(x,y)+ ((n_x*n_x*0.25) * (u(x-1,y)+u(x+1,y))) +  ((n_y*n_y) * (u(x,y-1)+u(x,y+1))));
-    #pragma omp parallel for private(x)
+	   u(x,y) = denom*(f(x,y))+ (d_nx2 * (u(x-1,y)+u(x+1,y))) +  (d_ny2 * (u(x,y-1)+u(x,y+1)));
+    #pragma omp parallel for private(y,x) schedule(static)
     for(y=2; y <= ngp_y-2 ;y=y+2)
         for(x=2; x<= ngp_x-2; x=x+2)
-	   u(x,y) = denom*(f(x,y)+ ((n_x*n_x*0.25) * (u(x-1,y)+u(x+1,y))) +  ((n_y*n_y) * (u(x,y-1)+u(x,y+1))));
+	   u(x,y) = denom*(f(x,y))+ (d_nx2* (u(x-1,y)+u(x+1,y))) +  (d_ny2* (u(x,y-1)+u(x,y+1)));
   //Red Update
-    #pragma omp parallel for private(x)
+    #pragma omp parallel for private(y,x) schedule(static)
     for(y=1; y <= ngp_y-2 ;y=y+2)
         for(x=2; x<= ngp_x-2; x=x+2)
-	   u(x,y) = denom*(f(x,y)+ ((n_x*n_x*0.25) * (u(x-1,y)+u(x+1,y))) +  ((n_y*n_y) * (u(x,y-1)+u(x,y+1))));
-    #pragma omp parallel for private(x)
+	   u(x,y) = denom*(f(x,y))+ (d_nx2 * (u(x-1,y)+u(x+1,y))) +  (d_ny2 * (u(x,y-1)+u(x,y+1)));
+    #pragma omp parallel for private(y,x) schedule(static)
     for(y=2; y <= ngp_y-2 ;y=y+2)
         for(x=1; x<= ngp_x-2; x=x+2)
-	   u(x,y) = denom*(f(x,y)+ ((n_x*n_x*0.25) * (u(x-1,y)+u(x+1,y))) +  ((n_y*n_y) * (u(x,y-1)+u(x,y+1))));
+	   u(x,y) = denom*(f(x,y))+ (d_nx2 * (u(x-1,y)+u(x+1,y))) +  (d_ny2 * (u(x,y-1)+u(x,y+1)));
   }
   
   time = std::min(time, timer.elapsed());
@@ -60,7 +64,7 @@ void solver(Grid &u,Grid &f,int c){
     #pragma omp parallel for private(res_i_j,x) reduction(+:sum)
     for(y=1; y <= ngp_y-2 ; ++y){
         for(x=1; x <= ngp_x-2 ; ++x){
-            res_i_j = (f(x,y)+ ((n_x*n_x*0.25) * (u(x-1,y)+u(x+1,y))) +  ((n_y*n_y) * (u(x,y-1)+u(x,y+1)) - (numer*u(x,y))));
+            res_i_j = (f(x,y)+ (_nx2 * (u(x-1,y)+u(x+1,y))) +  (_ny2 * (u(x,y-1)+u(x,y+1)) - (numer*u(x,y))));
             sum+= (res_i_j*res_i_j);
         }
     }

@@ -19,7 +19,6 @@ std::vector<double> vec;
 
 ///Constructor Declarations
 Grid(int size_x,int size_y);
-
 double& operator ()(int x, int y);
 
 

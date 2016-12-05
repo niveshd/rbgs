@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++0x -fopenmp -Wall -Wextra -Wshadow -Werror -O3 -DNDEBUG
+CXXFLAGS = -std=c++0x -fopenmp -Wall -Wextra -Wshadow -O3 -DNDEBUG
 
 INCLUDES =
 LDFLAGS =
@@ -25,7 +25,7 @@ solve: $(HEAD1).h $(HEAD2).cpp
 	$(CXX) -c $(CXXFLAGS) $(INCLUDES) $(HEAD2).cpp -o $(HEAD2)
 	
 test:
-	./rbgs 14 14 1000
+	./rbgs 1024 1024 500
 
 clean:
 	@$(RM) -rf *.o *.txt $(TARGET)
